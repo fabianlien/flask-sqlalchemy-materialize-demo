@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="blue-grey-text darken-4 center-align">Edit task</h3>
+
+<div class="row card-panel blue-grey lighten-5">
+    <form class="col s12" method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+        <div class="row">
+            <div class="input-field col s12">
+                <input name="task_name" value="{{ task.task_name }}" id="task_name" type="text" minlength="5"
+                    maxlength="80" class="validate">
+                <label for="task_name">Task</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea name="task_description" id="task_description" type="text" minlength="5" maxlength="200"
+                    class="validate materialize-textarea">{{ task.task_description }}</textarea>
+                <label for="task_description">Description</label>
+            </div>
+        </div>
+        <div class="input-field col s12">
+            <select id="category_id" name="category_id" class="validate" required>
+                <option value="" disabled>Select a category</option>
+                {% for category in categories %}
+                    {% if category == task.category %}
+                    <option value="{{ category.id }}" selected>{{ category.category_name }}</option>
+                    {% else %}
+                    <option value="{{ category.id }}">{{ category.category_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <label>Category</label>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input name="due_date" id="due_date" type="text" class="validate datepicker" value="{{ task.due_date.strftime('%d %B, %Y') }}">
+                <label for="task_name"><i class="fa-solid fa-calendar-days"></i> Due Date</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <div class="switch">
+                    <label for="is_urgent">
+                        {% if task.is_urgent %}
+                        <input name="is_urgent" id="is_urgent" type="checkbox" checked>
+                        {% else %}
+                        <input name="is_urgent" id="is_urgent" type="checkbox">
+                        {% endif %}
+                        <span class="lever"></span>
+                        <i class="fa-solid fa-circle-exclamation"></i> Important
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center-align">
+                <button type="submit">
+                    Update <i class="fa-solid fa-circle-plus"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
